@@ -5,34 +5,6 @@ use JobBrander\Jobs\Client\Job;
 class Craigslist extends AbstractProvider
 {
     /**
-     * Developer Key
-     *
-     * @var string
-     */
-    protected $developerKey;
-
-    /**
-     * Host Site
-     *
-     * @var string
-     */
-    protected $hostSite;
-
-    /**
-     * Use Facets (for city/state)
-     *
-     * @var string
-     */
-    protected $useFacets;
-
-    /**
-     * Enable Company Collapse (must be true to set count)
-     *
-     * @var string
-     */
-    protected $enableCompanyCollapse;
-
-    /**
      * Returns the standardized job object
      *
      * @param array $payload
@@ -42,85 +14,23 @@ class Craigslist extends AbstractProvider
     public function createJobObject($payload)
     {
         $defaults = [
-            'Company',
-            'CompanyDetailsURL',
-            'DescriptionTeaser',
-            'DID',
-            'OnetCode',
-            'ONetFriendlyTitle',
-            'EmploymentType',
-            'EducationRequired',
-            'ExperienceRequired',
-            'JobDetailsURL',
-            'Location',
-            'City',
-            'State',
-            'PostedTime',
-            'Pay',
-            'JobTitle',
-            'CompanyImageURL',
-            'Skills',
+            'title',
+            'link',
+            'description',
+            'date',
         ];
 
         $payload = static::parseAttributeDefaults($payload, $defaults);
 
         $job = new Job([
             'description' => $payload['DescriptionTeaser'],
-            'employmentType' => $payload['EmploymentType'],
             'title' => $payload['JobTitle'],
             'url' => $payload['JobDetailsURL'],
             'company' => $payload['Company'],
             'location' => $payload['Location'],
-            'educationRequirements' => $payload['EducationRequired'],
-            'experienceRequirements' => $payload['ExperienceRequired'],
-            'minimumSalary' => $payload['Pay'],
-            'sourceId' => $payload['DID'],
         ]);
 
-        $job->setOccupationalCategoryWithCodeAndTitle(
-            $payload['OnetCode'],
-            $payload['ONetFriendlyTitle']
-        )->setCompanyUrl($payload['CompanyDetailsURL'])
-            ->setCity($payload['City'])
-            ->setState($payload['State'])
-            ->setDatePostedAsString($payload['PostedTime'])
-            ->setCompanyLogo($payload['CompanyImageURL']);
-
-        if (isset($payload['Skills']['Skill'])) {
-            $job->setSkills(implode(', ', $payload['Skills']['Skill']));
-        }
-
         return $job;
-    }
-
-    /**
-     * Get host site
-     *
-     * @return string
-     */
-    public function getHostSite()
-    {
-        return 'US';
-    }
-
-    /**
-     * Get Use Facets
-     *
-     * @return string
-     */
-    public function getUseFacets()
-    {
-        return 'true';
-    }
-
-    /**
-     * Get Enable Company Collapse
-     *
-     * @return string
-     */
-    public function getEnableCompanyCollapse()
-    {
-        return 'true';
     }
 
     /**
@@ -161,14 +71,9 @@ class Craigslist extends AbstractProvider
     public function getQueryString()
     {
         $query_params = [
-            'DeveloperKey' => 'getDeveloperKey',
-            'Keywords' => 'getKeyword',
-            'FacetState' => 'getState',
-            'FacetCity' => 'getCity',
-            'PageNumber' => 'getPage',
-            'PerPage' => 'getCount',
-            'UseFacets' => 'getUseFacets',
-            'EnableCompanyCollapse' => 'getEnableCompanyCollapse',
+            'format' => 'getRssFormat',
+            'query' => 'getKeyword',
+            's' => 'getOffset',
         ];
 
         $query_string = [];
@@ -192,7 +97,7 @@ class Craigslist extends AbstractProvider
     {
         $query_string = $this->getQueryString();
 
-        return 'http://api.careerbuilder.com/v2/jobsearch/?'.$query_string;
+        return 'http://chicago.craigslist.org/search/jjj?'.$query_string;
     }
 
     /**
