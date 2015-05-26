@@ -1,14 +1,15 @@
 {
-    "name": "jobbrander/jobs-careerbuilder",
+    "name": "jobbrander/jobs-craigslist",
     "type": "library",
-    "description": "Making it simple to integrate your application with Careerbuilder Jobs API.",
+    "description": "Making it simple to integrate your application with Craigslist Jobs RSS feed.",
     "keywords": [
         "jobs",
         "api client",
         "object",
-        "careerbuilder"
+        "rss client",
+        "craigslist"
     ],
-    "homepage": "https://github.com/JobBrander/jobs-careerbuilder",
+    "homepage": "https://github.com/JobBrander/jobs-craigslist",
     "license": "Apache-2.0",
     "authors": [
         {
@@ -24,7 +25,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "jobbrander/jobs-common": "~0.3"
+        "jobbrander/jobs-common": "~0.6"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",

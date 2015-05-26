@@ -1,9 +1,9 @@
 <?php namespace JobBrander\Jobs\Client\Providers\Test;
 
-use JobBrander\Jobs\Client\Providers\Careerbuilder;
+use JobBrander\Jobs\Client\Providers\Craigslist;
 use Mockery as m;
 
-class CareerbuilderTest extends \PHPUnit_Framework_TestCase
+class CraigslistTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {

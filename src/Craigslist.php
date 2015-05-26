@@ -2,7 +2,7 @@
 
 use JobBrander\Jobs\Client\Job;
 
-class Careerbuilder extends AbstractProvider
+class Craigslist extends AbstractProvider
 {
     /**
      * Developer Key
