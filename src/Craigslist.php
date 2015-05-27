@@ -5,6 +5,20 @@ use JobBrander\Jobs\Client\Job;
 class Craigslist extends AbstractProvider
 {
     /**
+     * Rss format string for query to Craigslist
+     *
+     * @var string
+     */
+    protected $rssFormat;
+
+    /**
+     * Craigslist uses offset instead of paging
+     *
+     * @var string
+     */
+    protected $offset;
+
+    /**
      * Returns the standardized job object
      *
      * @param array $payload
@@ -13,11 +27,13 @@ class Craigslist extends AbstractProvider
      */
     public function createJobObject($payload)
     {
+        echo "<pre>"; print_r($payload); exit;
         $defaults = [
             'title',
             'link',
             'description',
             'date',
+            'enclosure',
         ];
 
         $payload = static::parseAttributeDefaults($payload, $defaults);
@@ -31,6 +47,36 @@ class Craigslist extends AbstractProvider
         ]);
 
         return $job;
+    }
+
+    /**
+     * Offset used for queries
+     *
+     * @return string
+     */
+    public function getOffset()
+    {
+        return ($this->page * $this->count);
+    }
+
+    /**
+     * Get data format
+     *
+     * @return string
+     */
+    public function getRssFormat()
+    {
+        return 'rss';
+    }
+
+    /**
+     * CL only returns 100 records at a time
+     *
+     * @return string
+     */
+    public function getCount()
+    {
+        return 100;
     }
 
     /**
@@ -50,7 +96,7 @@ class Craigslist extends AbstractProvider
      */
     public function getListingsPath()
     {
-        return 'Results.JobSearchResult';
+        return 'channel.item';
     }
 
     /**
@@ -108,27 +154,5 @@ class Craigslist extends AbstractProvider
     public function getVerb()
     {
         return 'GET';
-    }
-
-    /**
-     * Makes the api call and returns a collection of job objects
-     *
-     * @return  JobBrander\Jobs\Client\Collection
-     */
-    public function getJobs()
-    {
-        $client = $this->client;
-        $verb = strtolower($this->getVerb());
-        $url = $this->getUrl();
-        $options = $this->getHttpClientOptions();
-
-        $response = $client->{$verb}($url, $options);
-
-        $payload = $response->{$this->getFormat()}();
-        $payload = json_decode(json_encode($payload), true);
-
-        $listings = $this->getRawListings($payload);
-
-        return $this->getJobsCollectionFromListings($listings);
     }
 }
