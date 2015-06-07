@@ -87,7 +87,7 @@ class Careercast extends AbstractProvider
      */
     public function getCount()
     {
-        if($this->count > 50) {
+        if ($this->count > 50) {
             return 50;
         }
         return $this->count;
