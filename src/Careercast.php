@@ -5,6 +5,20 @@ use JobBrander\Jobs\Client\Job;
 class Careercast extends AbstractProvider
 {
     /**
+     * Rss format string for query to Craigslist
+     *
+     * @var string
+     */
+    protected $rssFormat;
+
+    /**
+     * Combined city and state location
+     *
+     * @var string
+     */
+    protected $location;
+
+    /**
      * Returns the standardized job object
      *
      * @param array $payload
@@ -13,36 +27,28 @@ class Careercast extends AbstractProvider
      */
     public function createJobObject($payload)
     {
-        echo "<pre>"; print_r($payload); exit;
         $defaults = [
             'title',
             'link',
             'description',
-            'date',
-            'enclosure',
+            'pubDate',
         ];
 
         $payload = static::parseAttributeDefaults($payload, $defaults);
 
         $job = new Job([
-            'description' => $payload['DescriptionTeaser'],
-            'title' => $payload['JobTitle'],
-            'url' => $payload['JobDetailsURL'],
-            'company' => $payload['Company'],
-            'location' => $payload['Location'],
+            'description' => $payload['description'],
+            'title' => $payload['title'],
+            'url' => $payload['link'],
+            'datePosted' => $payload['pubDate'],
+            'query' => $this->keyword,
+            'source' => $this->getSource(),
+            'city' => $this->getCity(),
+            'state' => $this->getState(),
+            'location' => $this->getLocation(),
         ]);
 
         return $job;
-    }
-
-    /**
-     * Offset used for queries
-     *
-     * @return string
-     */
-    public function getOffset()
-    {
-        return ($this->page * $this->count);
     }
 
     /**
@@ -56,13 +62,35 @@ class Careercast extends AbstractProvider
     }
 
     /**
-     * CL only returns 100 records at a time
+     * Get data format
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        if (isset($this->city) && isset($this->state)) {
+            return $this->city. ', '. $this->state;
+        }
+        if (isset($this->city)) {
+            return $this->city;
+        }
+        if (isset($this->state)) {
+            return $this->state;
+        }
+        return null;
+    }
+
+    /**
+     * Get number of results to return
      *
      * @return string
      */
     public function getCount()
     {
-        return 100;
+        if($this->count > 50) {
+            return 50;
+        }
+        return $this->count;
     }
 
     /**
@@ -104,8 +132,9 @@ class Careercast extends AbstractProvider
     {
         $query_params = [
             'format' => 'getRssFormat',
-            'query' => 'getKeyword',
-            's' => 'getOffset',
+            'rows' => 'getCount',
+            'page' => 'getPage',
+            'location' => 'getLocation',
         ];
 
         $query_string = [];
@@ -128,8 +157,13 @@ class Careercast extends AbstractProvider
     public function getUrl()
     {
         $query_string = $this->getQueryString();
+        if ($this->getKeyword()) {
+            $keyword = urlencode($this->getKeyword());
+        } else {
+            $keyword = urlencode(' ');
+        }
 
-        return 'http://chicago.craigslist.org/search/jjj?'.$query_string;
+        return 'http://www.careercast.com/jobs/results/keyword/'.$keyword.'?'.$query_string;
     }
 
     /**
