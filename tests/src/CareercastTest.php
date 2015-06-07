@@ -1,13 +1,13 @@
 <?php namespace JobBrander\Jobs\Client\Providers\Test;
 
-use JobBrander\Jobs\Client\Providers\Craigslist;
+use JobBrander\Jobs\Client\Providers\Careercast;
 use Mockery as m;
 
-class CraigslistTest extends \PHPUnit_Framework_TestCase
+class CareercastTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->client = new Craigslist();
+        $this->client = new Careercast();
     }
 
     public function testItAll()

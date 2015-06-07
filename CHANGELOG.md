@@ -1,7 +1,7 @@
 # Changelog
-All Notable changes to `jobs-craigslist` will be documented in this file
+All Notable changes to `jobs-careercast` will be documented in this file
 
-## 0.1.0 - 2015-05-26
+## 0.1.0 - 2015-06-07
 
 ### Added
 - Initial release

@@ -2,22 +2,8 @@
 
 use JobBrander\Jobs\Client\Job;
 
-class Craigslist extends AbstractProvider
+class Careercast extends AbstractProvider
 {
-    /**
-     * Rss format string for query to Craigslist
-     *
-     * @var string
-     */
-    protected $rssFormat;
-
-    /**
-     * Craigslist uses offset instead of paging
-     *
-     * @var string
-     */
-    protected $offset;
-
     /**
      * Returns the standardized job object
      *
