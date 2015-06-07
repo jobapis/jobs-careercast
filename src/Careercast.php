@@ -43,8 +43,8 @@ class Careercast extends AbstractProvider
             'datePosted' => $payload['pubDate'],
             'query' => $this->keyword,
             'source' => $this->getSource(),
-            'city' => $this->getCity(),
-            'state' => $this->getState(),
+            'city' => $this->city,
+            'state' => $this->state,
             'location' => $this->getLocation(),
         ]);
 
