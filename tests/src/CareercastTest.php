@@ -201,6 +201,24 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($payload['title'], $results->title);
         $this->assertEquals($payload['description'], $results->description);
         $this->assertEquals($payload['link'], $results->url);
+        $this->assertNotNull($results->company);
+        $this->assertInstanceOf('DateTime', $results->datePosted);
+        $this->assertEquals($city.', '.$state, $results->location);
+    }
+
+    public function testItCanCreateJobFromPayloadWithoutCompanyInDescription()
+    {
+        $city = uniqid();
+        $state = uniqid();
+        $this->client->setCity($city);
+        $this->client->setState($state);
+        $payload = $this->createJobArrayWithoutCompany();
+
+        $results = $this->client->createJobObject($payload);
+
+        $this->assertEquals($payload['title'], $results->title);
+        $this->assertEquals($payload['description'], $results->description);
+        $this->assertEquals($payload['link'], $results->url);
         $this->assertInstanceOf('DateTime', $results->datePosted);
         $this->assertEquals($city.', '.$state, $results->location);
     }
@@ -247,6 +265,15 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
     }
 
     private function createJobArray() {
+        return [
+            'title' => uniqid(),
+            'description' => uniqid().' - '.uniqid().' '.uniqid(),
+            'link' => uniqid(),
+            'pubDate' => date('F j, Y, g:i a'),
+        ];
+    }
+
+    private function createJobArrayWithoutCompany() {
         return [
             'title' => uniqid(),
             'description' => uniqid(),
