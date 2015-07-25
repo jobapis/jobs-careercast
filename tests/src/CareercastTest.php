@@ -218,6 +218,7 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
             array_push($payload, $jobArray);
             $responseBody .= "<item><title>".$jobArray['title']."</title>";
             $responseBody .= "<pubDate>".$jobArray['pubDate']."</pubDate>";
+            $responseBody .= "<description><![CDATA[ ".$jobArray['description']." ]]></description>";
             $responseBody .= "</item>";
         }
 
