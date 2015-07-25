@@ -5,6 +5,7 @@ All Notable changes to `jobs-careercast` will be documented in this file
 
 ### Added
 - Support for name attribute
+- Date object for postedDate
 
 ### Deprecated
 - Nothing

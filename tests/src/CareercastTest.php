@@ -201,7 +201,7 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($payload['title'], $results->title);
         $this->assertEquals($payload['description'], $results->description);
         $this->assertEquals($payload['link'], $results->url);
-        $this->assertEquals($payload['pubDate'], $results->datePosted);
+        $this->assertInstanceOf('DateTime', $results->datePosted);
         $this->assertEquals($city.', '.$state, $results->location);
     }
 
