@@ -182,4 +182,28 @@ class Careercast extends AbstractProvider
     {
         return 'GET';
     }
+
+    /**
+     * Attempt to parse as XML
+     *
+     * @param  string $string
+     *
+     * @return array
+     */
+    private function parseAsXml($string)
+    {
+        try {
+            return json_decode(
+                json_encode(
+                    simplexml_load_string(
+                        $string, null, LIBXML_NOCDATA
+                    )
+                ),
+                true
+            );
+        } catch (\Exception $e) {
+        }
+
+        return [];
+    }
 }
