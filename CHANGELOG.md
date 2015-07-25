@@ -1,6 +1,23 @@
 # Changelog
 All Notable changes to `jobs-careercast` will be documented in this file
 
+## 0.1.2 - 2015-07-25
+
+### Added
+- Support for name attribute
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Setting city and state methods based on query
+
+### Removed
+- Nothing
+
+### Security
+- Nothing
+
 ## 0.1.1 - 2015-07-04
 
 ### Added

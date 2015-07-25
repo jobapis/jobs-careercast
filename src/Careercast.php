@@ -39,14 +39,20 @@ class Careercast extends AbstractProvider
         $job = new Job([
             'description' => $payload['description'],
             'title' => $payload['title'],
+            'name' => $payload['title'],
             'url' => $payload['link'],
             'datePosted' => $payload['pubDate'],
             'query' => $this->keyword,
             'source' => $this->getSource(),
-            'city' => $this->city,
-            'state' => $this->state,
             'location' => $this->getLocation(),
         ]);
+
+        if (isset($this->city)) {
+            $job->setCity($this->city);
+        }
+        if (isset($this->state)) {
+            $job->setState($this->state);
+        }
 
         return $job;
     }

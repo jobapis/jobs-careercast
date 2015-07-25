@@ -191,7 +191,9 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
     public function testItCanCreateJobFromPayload()
     {
         $city = uniqid();
+        $state = uniqid();
         $this->client->setCity($city);
+        $this->client->setState($state);
         $payload = $this->createJobArray();
 
         $results = $this->client->createJobObject($payload);
@@ -200,7 +202,7 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($payload['description'], $results->description);
         $this->assertEquals($payload['link'], $results->url);
         $this->assertEquals($payload['pubDate'], $results->datePosted);
-        $this->assertEquals($city, $results->city);
+        $this->assertEquals($city.', '.$state, $results->location);
     }
 
     public function testItCanConnect()
