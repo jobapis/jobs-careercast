@@ -196,7 +196,9 @@ class Careercast extends AbstractProvider
             return json_decode(
                 json_encode(
                     simplexml_load_string(
-                        $string, null, LIBXML_NOCDATA
+                        $string,
+                        null,
+                        LIBXML_NOCDATA
                     )
                 ),
                 true
