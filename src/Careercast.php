@@ -54,6 +54,7 @@ class Careercast extends AbstractProvider
         if (isset($this->state)) {
             $job->setState($this->state);
         }
+        $job->setCompany($this->parseCompanyFromDescription($job->getDescription()));
 
         return $job;
     }
@@ -182,6 +183,25 @@ class Careercast extends AbstractProvider
     {
         return 'GET';
     }
+
+    /**
+     * Attempt to get the company name from the description
+     *
+     * @return  string
+     */
+    public function parseCompanyFromDescription($description)
+    {
+        $array = explode(' - ', $description);
+        if (isset($array[0]) && isset($array[1])) {
+            return $array[0];
+        }
+        return null;
+    }
+
+    /* NOTE: Everything below here should be removed when this issue:
+     * https://github.com/JobBrander/jobs-common/issues/4
+     * is fixed.
+     */
 
     /**
      * Makes the api call and returns a collection of job objects
