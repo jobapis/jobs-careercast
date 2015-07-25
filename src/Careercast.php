@@ -184,6 +184,29 @@ class Careercast extends AbstractProvider
     }
 
     /**
+     * Makes the api call and returns a collection of job objects
+     *
+     * @return  JobBrander\Jobs\Client\Collection
+     */
+    public function getJobs()
+    {
+        $client = $this->client;
+        $verb = strtolower($this->getVerb());
+        $url = $this->getUrl();
+        $options = $this->getHttpClientOptions();
+
+        $response = $client->{$verb}($url, $options);
+
+        $body = (string) $response->getBody();
+
+        $payload = $this->parseAsXml($body);
+
+        $listings = $this->getRawListings($payload);
+
+        return $this->getJobsCollectionFromListings($listings);
+    }
+
+    /**
      * Attempt to parse as XML
      *
      * @param  string $string
