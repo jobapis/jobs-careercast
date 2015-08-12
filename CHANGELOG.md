@@ -1,6 +1,23 @@
 # Changelog
 All Notable changes to `jobs-careercast` will be documented in this file
 
+## 0.1.3 - 2015-08-12
+
+### Added
+- Nothing
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Updated to v1.0.3 of jobs-common
+
+### Removed
+- getParameters and parseAsXml methods
+
+### Security
+- Nothing
+
 ## 0.1.2 - 2015-07-25
 
 ### Added
