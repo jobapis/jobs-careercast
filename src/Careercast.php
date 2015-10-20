@@ -134,13 +134,26 @@ class Careercast extends AbstractProvider
     }
 
     /**
+     * Get Location from input params
+     *
+     * @return string Location string
+     */
+    public function getLocation()
+    {
+        if (isset($this->queryParams['location'])) {
+            return $this->queryParams['location'];
+        }
+        return null;
+    }
+
+    /**
      * Get query string for client based on properties
      *
      * @return string
      */
     public function getQueryString()
     {
-        return http_build_query($query_string);
+        return http_build_query($this->queryParams);
     }
 
     /**
@@ -196,9 +209,6 @@ class Careercast extends AbstractProvider
     {
         if (array_key_exists($key, $this->queryParams)) {
             $this->queryParams[$key] = $value;
-        }
-        if (array_key_exists($key, $this->urlParams)) {
-            $this->urlParams[$key] = $value;
         }
         return $this;
     }

@@ -21,13 +21,6 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('xml', $format);
     }
 
-    public function testItWillGetRssFormat()
-    {
-        $format = $this->client->getRssFormat();
-
-        $this->assertEquals('rss', $format);
-    }
-
     public function testItWillUseGetHttpVerb()
     {
         $verb = $this->client->getVerb();
@@ -50,66 +43,6 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($parameters));
     }
 
-    public function testItWillGetLocationWhenCityAndStateProvided()
-    {
-        $city = uniqid();
-        $state = uniqid();
-
-        $this->client->setCity($city);
-        $this->client->setState($state);
-
-        $location = $this->client->getLocation();
-
-        $this->assertEquals($city.', '.$state, $location);
-    }
-
-    public function testItWillGetLocationWhenCityProvided()
-    {
-        $city = uniqid();
-        $this->client->setCity($city);
-
-        $location = $this->client->getLocation();
-
-        $this->assertEquals($city, $location);
-    }
-
-    public function testItWillGetLocationWhenStateProvided()
-    {
-        $state = uniqid();
-        $this->client->setState($state);
-
-        $location = $this->client->getLocation();
-
-        $this->assertEquals($state, $location);
-    }
-
-    public function testItWillNotGetLocationWhenNoneProvided()
-    {
-        $location = $this->client->getLocation();
-
-        $this->assertNull($location);
-    }
-
-    public function testItWillGetCountWhenUnderFifty()
-    {
-        $count = rand(1, 50);
-        $this->client->setCount($count);
-
-        $results = $this->client->getCount();
-
-        $this->assertEquals($count, $results);
-    }
-
-    public function testItWillGetCountWhenOverFifty()
-    {
-        $count = rand(51, 200);
-        $this->client->setCount($count);
-
-        $results = $this->client->getCount();
-
-        $this->assertEquals(50, $results);
-    }
-
     public function testUrlIncludesKeywordWhenProvided()
     {
         $keyword = uniqid().' '.uniqid();
@@ -122,8 +55,7 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
 
     public function testUrlNotIncludesKeywordWhenNotProvided()
     {
-        $defaultKeyword = ' ';
-        $param = 'keyword/'.urlencode($defaultKeyword);
+        $param = 'keyword/'.urlencode(' ');
 
         $url = $this->client->getUrl();
 
@@ -136,18 +68,28 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
         $state = uniqid();
         $param = 'location='.urlencode($city.', '.$state);
 
-        $url = $this->client->setCity($city)->setState($state)->getUrl();
+        $url = $this->client->setLocation($city.', '.$state)->getUrl();
 
         $this->assertContains($param, $url);
     }
 
-    public function testUrlNotIncludesLocationWhenNotProvided()
+    public function testItWillNotGetLocationWhenNoneProvided()
     {
-        $param = 'location=';
+        $param = 'location';
 
         $url = $this->client->getUrl();
 
         $this->assertNotContains($param, $url);
+    }
+
+    public function testItWillGetCount()
+    {
+        $count = rand(1, 50);
+        $this->client->setCount($count);
+
+        $results = $this->client->getCount();
+
+        $this->assertEquals($count, $results);
     }
 
     public function testUrlIncludesPageWhenProvided()
@@ -192,8 +134,7 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
     {
         $city = uniqid();
         $state = uniqid();
-        $this->client->setCity($city);
-        $this->client->setState($state);
+        $this->client->setLocation($city.', '.$state);
         $payload = $this->createJobArray();
 
         $results = $this->client->createJobObject($payload);
@@ -203,15 +144,13 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($payload['link'], $results->url);
         $this->assertNotNull($results->company);
         $this->assertInstanceOf('DateTime', $results->datePosted);
-        $this->assertEquals($city.', '.$state, $results->location);
     }
 
     public function testItCanCreateJobFromPayloadWithoutCompanyInDescription()
     {
         $city = uniqid();
         $state = uniqid();
-        $this->client->setCity($city);
-        $this->client->setState($state);
+        $this->client->setLocation($city.', '.$state);
         $payload = $this->createJobArrayWithoutCompany();
 
         $results = $this->client->createJobObject($payload);
@@ -220,7 +159,6 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($payload['description'], $results->description);
         $this->assertEquals($payload['link'], $results->url);
         $this->assertInstanceOf('DateTime', $results->datePosted);
-        $this->assertEquals($city.', '.$state, $results->location);
     }
 
     public function testItCanConnect()
