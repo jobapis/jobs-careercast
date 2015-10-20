@@ -20,16 +20,28 @@ composer require jobbrander/jobs-careercast
 
 ## Usage
 
-Usage is the same as Job Branders's Jobs Client, using `\JobBrander\Jobs\Client\Provider\Careercast` as the provider.
+Usage is the same as Job Branders's Jobs Client, using `\JobBrander\Jobs\Client\Providers\Careercast` as the provider.
 
 ```php
 $client = new JobBrander\Jobs\Client\Provider\Careercast();
 
 // Search for 200 job listings for 'project manager' in Chicago, IL
-$jobs = $client->setKeyword('project manager') // Keyword or phrase to search for on Careercast
-    ->setCity('Chicago')
-    ->setState('IL')
-    ->setCount(100)
+$jobs = $client
+    // Setters from CareerCast's [Advanced Search](http://www.careercast.com/jobs/search/advanced)
+    ->setRows()         // Number of jobs to return per page
+    ->setPage()         // Set page number
+    ->setRadius()       // Location search radius
+    ->setNormalizedJobTitle()  // Choose from a standard list of job titles
+    ->setCategory()     // Category name
+    ->setCompany()      // Company name
+    ->setJobSource()    // "staffing_firm" or "direct_employer"
+    ->setPostDate()     // Post date range string wrapped in brackets and URL encoded, eg: "%5BNOW-7DAYS+TO+NOW%5D"
+    ->setFormat()       // Defaults to "rss"
+    ->setWorkStatus()   // "full_time" or "part_time"
+    ->setLocation('Chicago, Illinois, United States')
+    // More
+    ->setKeyword('project manager')     // Keyword to search as part of the URL
+    ->setCount(100)     // Alias for setRows() above
     ->getJobs();
 ```
 

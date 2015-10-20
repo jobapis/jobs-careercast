@@ -1,6 +1,25 @@
 # Changelog
 All Notable changes to `jobs-careercast` will be documented in this file
 
+## 0.2.0 - 2015-10-19
+
+### Added
+- Support for more setters in RSS feed query strings
+- Readme documentation for supported methods
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Sorting methods alphabetically
+- Travis-ci support for PHP 7.0 and HHVM
+
+### Removed
+- setCity and setState methods not supported by official API
+
+### Security
+- Nothing
+
 ## 0.1.3 - 2015-08-12
 
 ### Added
