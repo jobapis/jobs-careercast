@@ -39,6 +39,7 @@ $jobs = $client
     ->setFormat()       // Defaults to "rss"
     ->setWorkStatus()   // "full_time" or "part_time"
     ->setLocation('Chicago, Illinois, United States')
+    ->setKwsJobTitleOnly()  // Set to "true" to only search job titles
     // More
     ->setKeyword('project manager')     // Keyword to search as part of the URL
     ->setCount(100)     // Alias for setRows() above
