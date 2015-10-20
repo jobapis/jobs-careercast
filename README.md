@@ -25,7 +25,7 @@ Usage is the same as Job Branders's Jobs Client, using `\JobBrander\Jobs\Client\
 ```php
 $client = new JobBrander\Jobs\Client\Provider\Careercast();
 
-// Search for 200 job listings for 'project manager' in Chicago, IL
+// Search for 100 job listings for 'project manager' in Chicago, IL
 $jobs = $client
     // Setters from CareerCast's [Advanced Search](http://www.careercast.com/jobs/search/advanced)
     ->setRows()         // Number of jobs to return per page

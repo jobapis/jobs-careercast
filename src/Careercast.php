@@ -5,18 +5,72 @@ use JobBrander\Jobs\Client\Job;
 class Careercast extends AbstractProvider
 {
     /**
-     * Rss format string for query to Craigslist
+     * Map of setter methods to query parameters
      *
-     * @var string
+     * @var array
      */
-    protected $rssFormat;
+    protected $queryMap = [
+        'setRows' => 'rows',
+        'setPage' => 'page',
+        'setRadius' => 'radius',
+        'setNormalizedJobTitle' => 'normalizedJobTitle',
+        'setCategory' => 'category',
+        'setCompany' => 'company',
+        'setJobSource' => 'jobSource',
+        'setPostDate' => 'postDate',
+        'setFormat' => 'format',
+        'setWorkStatus' => 'workStatus',
+        'setLocation' => 'location',
+        'setKwsJobTitleOnly' => 'kwsJobTitleOnly',
+        'setCount' => 'rows',
+    ];
 
     /**
-     * Combined city and state location
+     * Current url query parameters
      *
-     * @var string
+     * @var array
      */
-    protected $location;
+    protected $queryParams = [
+        'rows' => null,
+        'page' => null,
+        'radius' => null,
+        'normalizedJobTitle' => null,
+        'category' => null,
+        'company' => null,
+        'jobSource' => null,
+        'postDate' => null,
+        'format' => 'rss',
+        'workStatus' => null,
+        'location' => null,
+        'kwsJobTitleOnly' => null,
+    ];
+
+    /**
+     * Create new Careercast jobs client.
+     *
+     * @param array $parameters
+     */
+    public function __construct($parameters = [])
+    {
+        parent::__construct($parameters);
+        array_walk($parameters, [$this, 'updateQuery']);
+    }
+
+    /**
+     * Magic method to handle get and set methods for properties
+     *
+     * @param  string $method
+     * @param  array  $parameters
+     *
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        if (isset($this->queryMap[$method], $parameters[0])) {
+            $this->updateQuery($parameters[0], $this->queryMap[$method]);
+        }
+        return parent::__call($method, $parameters);
+    }
 
     /**
      * Returns the standardized job object
@@ -64,48 +118,6 @@ class Careercast extends AbstractProvider
      *
      * @return string
      */
-    public function getRssFormat()
-    {
-        return 'rss';
-    }
-
-    /**
-     * Get data format
-     *
-     * @return string
-     */
-    public function getLocation()
-    {
-        if (isset($this->city) && isset($this->state)) {
-            return $this->city. ', '. $this->state;
-        }
-        if (isset($this->city)) {
-            return $this->city;
-        }
-        if (isset($this->state)) {
-            return $this->state;
-        }
-        return null;
-    }
-
-    /**
-     * Get number of results to return
-     *
-     * @return string
-     */
-    public function getCount()
-    {
-        if ($this->count > 50) {
-            return 50;
-        }
-        return $this->count;
-    }
-
-    /**
-     * Get data format
-     *
-     * @return string
-     */
     public function getFormat()
     {
         return 'xml';
@@ -128,22 +140,6 @@ class Careercast extends AbstractProvider
      */
     public function getQueryString()
     {
-        $query_params = [
-            'format' => 'getRssFormat',
-            'rows' => 'getCount',
-            'page' => 'getPage',
-            'location' => 'getLocation',
-        ];
-
-        $query_string = [];
-
-        array_walk($query_params, function ($value, $key) use (&$query_string) {
-            $computed_value = $this->$value();
-            if (!is_null($computed_value)) {
-                $query_string[$key] = $computed_value;
-            }
-        });
-
         return http_build_query($query_string);
     }
 
@@ -186,5 +182,24 @@ class Careercast extends AbstractProvider
             return $array[0];
         }
         return null;
+    }
+
+    /**
+     * Attempts to update current query parameters.
+     *
+     * @param  string  $value
+     * @param  string  $key
+     *
+     * @return Careercast
+     */
+    protected function updateQuery($value, $key)
+    {
+        if (array_key_exists($key, $this->queryParams)) {
+            $this->queryParams[$key] = $value;
+        }
+        if (array_key_exists($key, $this->urlParams)) {
+            $this->urlParams[$key] = $value;
+        }
+        return $this;
     }
 }
