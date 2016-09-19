@@ -2,7 +2,7 @@
 
 Contributions are **welcome** and will be fully **credited**.
 
-We accept contributions via Pull Requests on [Github](https://github.com/jobbrander/jobs-careercast).
+We accept contributions via Pull Requests on [Github](https://github.com/jobapis/jobs-careercast).
 
 
 ## Pull Requests

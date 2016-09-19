@@ -1,6 +1,12 @@
 # Changelog
 All Notable changes to `jobs-careercast` will be documented in this file
 
+## 1.0.0 - 2015-09-??
+
+### Added
+- Support for V2 of jobs common
+- Real API call integration test
+
 ## 0.2.0 - 2015-10-19
 
 ### Added

@@ -1,52 +1,26 @@
 # CareerCast RSS Jobs Client
 
-[![Latest Version](https://img.shields.io/github/release/JobBrander/jobs-careercast.svg?style=flat-square)](https://github.com/JobBrander/jobs-careercast/releases)
+[![Latest Version](https://img.shields.io/github/release/jobapis/jobs-careercast.svg?style=flat-square)](https://github.com/jobapis/jobs-careercast/releases)
 [![Software License](https://img.shields.io/badge/license-APACHE%202.0-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/JobBrander/jobs-careercast/master.svg?style=flat-square&1)](https://travis-ci.org/JobBrander/jobs-careercast)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/JobBrander/jobs-careercast.svg?style=flat-square)](https://scrutinizer-ci.com/g/JobBrander/jobs-careercast/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/g/JobBrander/jobs-careercast.svg?style=flat-square)](https://scrutinizer-ci.com/g/JobBrander/jobs-careercast)
-[![Total Downloads](https://img.shields.io/packagist/dt/jobbrander/jobs-careercast.svg?style=flat-square)](https://packagist.org/packages/jobbrander/jobs-careercast)
+[![Build Status](https://img.shields.io/travis/jobapis/jobs-careercast/master.svg?style=flat-square&1)](https://travis-ci.org/jobapis/jobs-careercast)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/jobapis/jobs-careercast.svg?style=flat-square)](https://scrutinizer-ci.com/g/jobapis/jobs-careercast/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/g/jobapis/jobs-careercast.svg?style=flat-square)](https://scrutinizer-ci.com/g/jobapis/jobs-careercast)
+[![Total Downloads](https://img.shields.io/packagist/dt/jobapis/jobs-careercast.svg?style=flat-square)](https://packagist.org/packages/jobapis/jobs-careercast)
 
 This package provides [CareerCast Jobs RSS](http://www.careercast.com/jobs/results/keyword?format=rss)
-support for the JobBrander's [Jobs Client](https://github.com/JobBrander/jobs-common).
+support for the [Jobs Common project](https://github.com/JobBrander/jobs-common).
 
 ## Installation
 
 To install, use composer:
 
 ```
-composer require jobbrander/jobs-careercast
+composer require jobapis/jobs-careercast
 ```
 
 ## Usage
 
-Usage is the same as Job Branders's Jobs Client, using `\JobBrander\Jobs\Client\Providers\Careercast` as the provider.
-
-```php
-$client = new JobBrander\Jobs\Client\Provider\Careercast();
-
-// Search for 100 job listings for 'project manager' in Chicago, IL
-$jobs = $client
-    // Setters from CareerCast's [Advanced Search](http://www.careercast.com/jobs/search/advanced)
-    ->setRows()         // Number of jobs to return per page
-    ->setPage()         // Set page number
-    ->setRadius()       // Location search radius
-    ->setNormalizedJobTitle()  // Choose from a standard list of job titles
-    ->setCategory()     // Category name
-    ->setCompany()      // Company name
-    ->setJobSource()    // "staffing_firm" or "direct_employer"
-    ->setPostDate()     // Post date range string wrapped in brackets and URL encoded, eg: "%5BNOW-7DAYS+TO+NOW%5D"
-    ->setFormat()       // Defaults to "rss"
-    ->setWorkStatus()   // "full_time" or "part_time"
-    ->setLocation('Chicago, Illinois, United States')
-    ->setKwsJobTitleOnly()  // Set to "true" to only search job titles
-    // More
-    ->setKeyword('project manager')     // Keyword to search as part of the URL
-    ->setCount(100)     // Alias for setRows() above
-    ->getJobs();
-```
-
-The `getJobs` method will return a [Collection](https://github.com/JobBrander/jobs-common/blob/master/src/Collection.php) of [Job](https://github.com/JobBrander/jobs-common/blob/master/src/Job.php) objects.
+COMING SOON!
 
 ## Testing
 
@@ -56,14 +30,14 @@ $ ./vendor/bin/phpunit
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/jobbrander/jobs-careercast/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/jobapis/jobs-careercast/blob/master/CONTRIBUTING.md) for details.
 
 ## Credits
 
 - [Karl Hughes](https://github.com/karllhughes)
 - [Steven Maguire](https://github.com/stevenmaguire)
-- [All Contributors](https://github.com/jobbrander/jobs-careercast/contributors)
+- [All Contributors](https://github.com/jobapis/jobs-careercast/contributors)
 
 ## License
 
-The Apache 2.0. Please see [License File](https://github.com/jobbrander/jobs-careercast/blob/master/LICENSE) for more information.
+The Apache 2.0. Please see [License File](https://github.com/jobapis/jobs-careercast/blob/master/LICENSE) for more information.
