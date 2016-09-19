@@ -1,5 +1,5 @@
 {
-    "name": "jobbrander/jobs-careercast",
+    "name": "jobapis/jobs-careercast",
     "type": "library",
     "description": "Making it simple to integrate your application with Careercast's Jobs RSS feed.",
     "keywords": [
@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "jobbrander/jobs-common": "~1.0.3"
+        "jobapis/jobs-common": "^2.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=4.6",
@@ -30,12 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "JobBrander\\Jobs\\Client\\Providers\\": "src/"
+            "JobApis\\Jobs\\Client\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "JobBrander\\Jobs\\Client\\Providers\\Test\\": "tests/src/"
+            "JobApis\\Jobs\\Client\\Providers\\Test\\": "tests/src/"
         }
     }
 }

@@ -1,9 +1,9 @@
-<?php namespace JobBrander\Jobs\Client\Providers\Test;
+<?php namespace JobApis\Jobs\Client\Providers\Test;
 
-use JobBrander\Jobs\Client\Providers\Careercast;
+use JobApis\Jobs\Client\Providers\CareercastProvider;
 use Mockery as m;
 
-class CareercastTest extends \PHPUnit_Framework_TestCase
+class CareercastProviderTest extends \PHPUnit_Framework_TestCase
 {
     private $clientClass = 'JobBrander\Jobs\Client\Providers\AbstractProvider';
     private $collectionClass = 'JobBrander\Jobs\Client\Collection';
@@ -11,7 +11,7 @@ class CareercastTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->client = new Careercast();
+        $this->client = new CareercastProvider();
     }
 
     public function testItWillUseXmlFormat()

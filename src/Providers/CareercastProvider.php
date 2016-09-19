@@ -1,8 +1,8 @@
-<?php namespace JobBrander\Jobs\Client\Providers;
+<?php namespace JobApis\Jobs\Client\Providers;
 
-use JobBrander\Jobs\Client\Job;
+use JobApis\Jobs\Client\Job;
 
-class Careercast extends AbstractProvider
+class CareercastProvider extends AbstractProvider
 {
     /**
      * Map of setter methods to query parameters
