@@ -1,6 +1,15 @@
 # Changelog
 All Notable changes to `jobs-careercast` will be documented in this file
 
+## 1.0.0 - 2015-09-22
+
+### Added
+- Support for V2 of jobs common
+- Real API call integration test
+
+### Changed
+- Default to JSON output format which limits the input parameters, but allows more detailed job objects.
+
 ## 0.2.0 - 2015-10-19
 
 ### Added
