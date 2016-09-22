@@ -5,122 +5,55 @@ use JobApis\Jobs\Client\Job;
 class CareercastProvider extends AbstractProvider
 {
     /**
-     * Map of setter methods to query parameters
-     *
-     * @var array
-     */
-    protected $queryMap = [
-        'setRows' => 'rows',
-        'setPage' => 'page',
-        'setRadius' => 'radius',
-        'setNormalizedJobTitle' => 'normalizedJobTitle',
-        'setCategory' => 'category',
-        'setCompany' => 'company',
-        'setJobSource' => 'jobSource',
-        'setPostDate' => 'postDate',
-        'setFormat' => 'format',
-        'setWorkStatus' => 'workStatus',
-        'setLocation' => 'location',
-        'setKwsJobTitleOnly' => 'kwsJobTitleOnly',
-        'setCount' => 'rows',
-    ];
-
-    /**
-     * Current url query parameters
-     *
-     * @var array
-     */
-    protected $queryParams = [
-        'rows' => null,
-        'page' => null,
-        'radius' => null,
-        'normalizedJobTitle' => null,
-        'category' => null,
-        'company' => null,
-        'jobSource' => null,
-        'postDate' => null,
-        'format' => 'rss',
-        'workStatus' => null,
-        'location' => null,
-        'kwsJobTitleOnly' => null,
-    ];
-
-    /**
-     * Create new Careercast jobs client.
-     *
-     * @param array $parameters
-     */
-    public function __construct($parameters = [])
-    {
-        parent::__construct($parameters);
-        array_walk($parameters, [$this, 'updateQuery']);
-    }
-
-    /**
-     * Magic method to handle get and set methods for properties
-     *
-     * @param  string $method
-     * @param  array  $parameters
-     *
-     * @return mixed
-     */
-    public function __call($method, $parameters)
-    {
-        if (isset($this->queryMap[$method], $parameters[0])) {
-            $this->updateQuery($parameters[0], $this->queryMap[$method]);
-        }
-        return parent::__call($method, $parameters);
-    }
-
-    /**
      * Returns the standardized job object
      *
      * @param array $payload
      *
-     * @return \JobBrander\Jobs\Client\Job
+     * @return \JobApis\Jobs\Client\Job
      */
     public function createJobObject($payload)
     {
-        $defaults = [
-            'title',
-            'link',
-            'description',
-            'pubDate',
-        ];
-
-        $payload = static::parseAttributeDefaults($payload, $defaults);
-
         $job = new Job([
-            'description' => $payload['description'],
-            'title' => $payload['title'],
-            'name' => $payload['title'],
-            'url' => $payload['link'],
-            'query' => $this->keyword,
-            'source' => $this->getSource(),
-            'location' => $this->getLocation(),
+            'description' => $payload['Description'],
+            'title' => $payload['JobTitle'],
+            'name' => $payload['JobTitle'],
+            'url' => $payload['Url'],
+            'sourceId' => $payload['Id'],
+            'datePosted' => $payload['PostDate'],
+            'validThrough' => $payload['ExpireDate'],
+            'qualifications' => $payload['Requirements'],
+            'maximumSalaray' => $payload['SalaryMax'],
+            'minimumSalaray' => $payload['SalaryMin'],
+            'baseSalaray' => $payload['SalaryMin'],
+            'occupationalCategory' => implode(', ', $payload['CategoryDisplay']),
+            'employmentType' => implode(', ', $payload['WorkStatusDisplay']),
         ]);
 
-        $job->setDatePostedAsString($payload['pubDate']);
-
-        if (isset($this->city)) {
-            $job->setCity($this->city);
-        }
-        if (isset($this->state)) {
-            $job->setState($this->state);
-        }
-        $job->setCompany($this->parseCompanyFromDescription($job->getDescription()));
-
-        return $job;
+        $job = $this->setCompany($payload, $job);
+        return $this->setLocation($payload, $job);
     }
 
     /**
-     * Get data format
+     * Job response object default keys that should be set
      *
-     * @return string
+     * @return  string
      */
-    public function getFormat()
+    public function getDefaultResponseFields()
     {
-        return 'xml';
+        return [
+            'Description',
+            'JobTitle',
+            'Url',
+            'Id',
+            'PostDate',
+            'ExpireDate',
+            'Requirements',
+            'SalaryMax',
+            'SalaryMin',
+            'SalaryMin',
+            'CategoryDisplay',
+            'WorkStatusDisplay',
+        ];
     }
 
     /**
@@ -130,57 +63,57 @@ class CareercastProvider extends AbstractProvider
      */
     public function getListingsPath()
     {
-        return 'channel.item';
+        return 'Jobs';
     }
 
     /**
-     * Get Location from input params
+     * Parses the company name and attaches it to the job
      *
-     * @return string Location string
+     * @param $payload array
+     * @param $job \JobApis\Jobs\Client\Job
+     *
+     * @return \JobApis\Jobs\Client\Job
      */
-    public function getLocation()
+    protected function setCompany($payload, $job)
     {
-        if (isset($this->queryParams['location'])) {
-            return $this->queryParams['location'];
+        if (isset($payload['Company'])) {
+            $job->setCompany($payload['Company']);
         }
-        return null;
+        return $job;
     }
 
     /**
-     * Get query string for client based on properties
+     * Parses the location and attaches it to the job
      *
-     * @return string
-     */
-    public function getQueryString()
-    {
-        return http_build_query($this->queryParams);
-    }
-
-    /**
-     * Get url
+     * @param $payload array
+     * @param $job \JobApis\Jobs\Client\Job
      *
-     * @return  string
+     * @return \JobApis\Jobs\Client\Job
      */
-    public function getUrl()
+    protected function setLocation($payload, $job)
     {
-        $query_string = $this->getQueryString();
-        if ($this->getKeyword()) {
-            $keyword = urlencode($this->getKeyword());
-        } else {
-            $keyword = urlencode(' ');
+        if (isset($payload['FormattedCityState'])) {
+            $job->setLocation($payload['FormattedCityState']);
         }
-
-        return 'http://www.careercast.com/jobs/results/keyword/'.$keyword.'?'.$query_string;
-    }
-
-    /**
-     * Get http verb
-     *
-     * @return  string
-     */
-    public function getVerb()
-    {
-        return 'GET';
+        if (isset($payload['State'])) {
+            $job->setState($payload['State']);
+        }
+        if (isset($payload['Country'])) {
+            $job->setCountry($payload['Country']);
+        }
+        if (isset($payload['City'])) {
+            $job->setCity($payload['City']);
+        }
+        if (isset($payload['Longitude'])) {
+            $job->setLongitude($payload['Longitude']);
+        }
+        if (isset($payload['Latitude'])) {
+            $job->setLatitude($payload['Latitude']);
+        }
+        if (isset($payload['Zip'])) {
+            $job->setPostalCode($payload['Zip']);
+        }
+        return $job;
     }
 
     /**
@@ -188,28 +121,12 @@ class CareercastProvider extends AbstractProvider
      *
      * @return  string
      */
-    public function parseCompanyFromDescription($description)
+    protected function parseCompanyFromDescription($description)
     {
         $array = explode(' - ', $description);
         if (isset($array[0]) && isset($array[1])) {
             return $array[0];
         }
         return null;
-    }
-
-    /**
-     * Attempts to update current query parameters.
-     *
-     * @param  string  $value
-     * @param  string  $key
-     *
-     * @return Careercast
-     */
-    protected function updateQuery($value, $key)
-    {
-        if (array_key_exists($key, $this->queryParams)) {
-            $this->queryParams[$key] = $value;
-        }
-        return $this;
     }
 }
