@@ -72,11 +72,11 @@ class CareercastProviderTest extends \PHPUnit_Framework_TestCase
 
         $response = m::mock('GuzzleHttp\Message\Response');
 
-        $jobs = [
+        $jobs = json_encode(['Jobs' => [
             0 => $this->createJobArray(),
             1 => $this->createJobArray(),
             2 => $this->createJobArray(),
-        ];
+        ]]);
 
         $guzzle->shouldReceive('get')
             ->with($query->getUrl(), [])
