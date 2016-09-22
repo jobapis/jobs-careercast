@@ -132,18 +132,4 @@ class CareercastProvider extends AbstractProvider
         }
         return $job;
     }
-
-    /**
-     * Attempt to get the company name from the description
-     *
-     * @return  string
-     */
-    protected function parseCompanyFromDescription($description)
-    {
-        $array = explode(' - ', $description);
-        if (isset($array[0]) && isset($array[1])) {
-            return $array[0];
-        }
-        return null;
-    }
 }
