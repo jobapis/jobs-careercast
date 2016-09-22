@@ -25,10 +25,8 @@ class CareercastProvider extends AbstractProvider
             'maximumSalaray' => $payload['SalaryMax'],
             'minimumSalaray' => $payload['SalaryMin'],
             'baseSalaray' => $payload['SalaryMin'],
-            'occupationalCategory' => implode(', ', $payload['CategoryDisplay']),
-            'employmentType' => implode(', ', $payload['WorkStatusDisplay']),
         ]);
-
+        $job = $this->setCategory($payload, $job);
         $job = $this->setCompany($payload, $job);
         return $this->setLocation($payload, $job);
     }
@@ -64,6 +62,25 @@ class CareercastProvider extends AbstractProvider
     public function getListingsPath()
     {
         return 'Jobs';
+    }
+
+    /**
+     * Parses the category and work type and attaches it to the job
+     *
+     * @param $payload array
+     * @param $job \JobApis\Jobs\Client\Job
+     *
+     * @return \JobApis\Jobs\Client\Job
+     */
+    protected function setCategory($payload, $job)
+    {
+        if (isset($payload['CategoryDisplay']) && is_array($payload['CategoryDisplay'])) {
+            $job->setOccupationalCategory(implode(', ', $payload['CategoryDisplay']));
+        }
+        if (isset($payload['CategoryDisplay']) && is_array($payload['WorkStatusDisplay'])) {
+            $job->setEmploymentType(implode(', ', $payload['WorkStatusDisplay']));
+        }
+        return $job;
     }
 
     /**
