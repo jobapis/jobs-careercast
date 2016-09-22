@@ -7,13 +7,13 @@ class CareercastQueryTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->query = new UsajobsQuery();
+        $this->query = new CareercastQuery();
     }
 
     public function testItCanGetBaseUrl()
     {
         $this->assertEquals(
-            'https://data.usajobs.gov/api/search',
+            'http://www.careercast.com/jobs/results/keyword/',
             $this->query->getBaseUrl()
         );
     }
@@ -21,13 +21,8 @@ class CareercastQueryTest extends \PHPUnit_Framework_TestCase
     public function testItCanGetKeyword()
     {
         $keyword = uniqid();
-        $this->query->set('Keyword', $keyword);
+        $this->query->set('keyword', $keyword);
         $this->assertEquals($keyword, $this->query->getKeyword());
-    }
-
-    public function testItCanGetHttpMethodOptions()
-    {
-        $this->assertTrue(array_key_exists('headers', $this->query->getHttpMethodOptions()));
     }
 
     public function testItReturnsFalseIfRequiredAttributesMissing()
@@ -37,7 +32,7 @@ class CareercastQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testItReturnsTrueIfRequiredAttributesPresent()
     {
-        $this->query->set('AuthorizationKey', uniqid());
+        $this->query->set('keyword', uniqid());
 
         $this->assertTrue($this->query->isValid());
     }
@@ -46,13 +41,13 @@ class CareercastQueryTest extends \PHPUnit_Framework_TestCase
     {
         $keyword = uniqid();
 
-        $this->query->set('Keyword', $keyword);
-        $this->query->set('SecurityClearanceRequired', 'Secret');
+        $this->query->set('keyword', $keyword);
+        $this->query->set('rows', rand(1,10));
 
         $url = $this->query->getUrl();
 
-        $this->assertContains('Keyword=', $url);
-        $this->assertContains('SecurityClearanceRequired=', $url);
+        $this->assertContains('keyword/'.$keyword, $url);
+        $this->assertContains('rows=', $url);
     }
 
     /**
@@ -74,10 +69,10 @@ class CareercastQueryTest extends \PHPUnit_Framework_TestCase
     public function testItSetsAndGetsValidAttributes()
     {
         $attributes = [
-            'Keyword' => uniqid(),
-            'PositionTitle' => uniqid(),
-            'PayGradeHigh' => uniqid(),
-            'TravelPercentage' => uniqid(),
+            'keyword' => uniqid(),
+            'rows' => uniqid(),
+            'page' => uniqid(),
+            'company' => uniqid(),
         ];
 
         foreach ($attributes as $key => $value) {
