@@ -1,4 +1,4 @@
-# CareerCast RSS Jobs Client
+# CareerCast Job Board API Client
 
 [![Latest Version](https://img.shields.io/github/release/jobapis/jobs-careercast.svg?style=flat-square)](https://github.com/jobapis/jobs-careercast/releases)
 [![Software License](https://img.shields.io/badge/license-APACHE%202.0-brightgreen.svg?style=flat-square)](LICENSE.md)
