@@ -7,7 +7,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/jobapis/jobs-careercast.svg?style=flat-square)](https://scrutinizer-ci.com/g/jobapis/jobs-careercast)
 [![Total Downloads](https://img.shields.io/packagist/dt/jobapis/jobs-careercast.svg?style=flat-square)](https://packagist.org/packages/jobapis/jobs-careercast)
 
-This package provides [CareerCast Jobs RSS](http://www.careercast.com/jobs/results/keyword?format=rss)
+This package provides [CareerCast Jobs](http://www.careercast.com/jobs/results/keyword?format=json)
 support for the [Jobs Common project](https://github.com/JobBrander/jobs-common).
 
 ## Installation
