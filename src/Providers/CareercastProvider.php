@@ -19,13 +19,13 @@ class CareercastProvider extends AbstractProvider
             'name' => $payload['JobTitle'],
             'url' => $payload['Url'],
             'sourceId' => $payload['Id'],
-            'datePosted' => $payload['PostDate'],
             'validThrough' => $payload['ExpireDate'],
             'qualifications' => $payload['Requirements'],
             'maximumSalaray' => $payload['SalaryMax'],
             'minimumSalaray' => $payload['SalaryMin'],
             'baseSalaray' => $payload['SalaryMin'],
         ]);
+        $job->setDatePostedAsString($payload['PostDate']);
         $job = $this->setCategory($payload, $job);
         $job = $this->setCompany($payload, $job);
         return $this->setLocation($payload, $job);

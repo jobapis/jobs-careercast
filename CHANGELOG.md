@@ -1,7 +1,12 @@
 # Changelog
 All Notable changes to `jobs-careercast` will be documented in this file
 
-## 1.0.0 - 2015-09-22
+## 1.0.1 - 2016-10-06
+
+### Fixed
+- DatePosted on Job object now being saved as object instead of string. 
+
+## 1.0.0 - 2016-09-22
 
 ### Added
 - Support for V2 of jobs common

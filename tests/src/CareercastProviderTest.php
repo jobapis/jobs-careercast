@@ -49,6 +49,7 @@ class CareercastProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($payload['JobTitle'], $results->title);
         $this->assertEquals($payload['Description'], $results->description);
         $this->assertEquals($payload['Url'], $results->url);
+        $this->assertEquals(\DateTime::class, get_class($results->datePosted));
     }
 
     /**
@@ -110,7 +111,6 @@ class CareercastProviderTest extends \PHPUnit_Framework_TestCase
         $client = new CareercastProvider($query);
 
         $results = $client->getJobs();
-        // var_dump($results); exit;
 
         $this->assertInstanceOf('JobApis\Jobs\Client\Collection', $results);
 
