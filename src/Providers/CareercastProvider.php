@@ -19,13 +19,13 @@ class CareercastProvider extends AbstractProvider
             'name' => $payload['JobTitle'],
             'url' => $payload['Url'],
             'sourceId' => $payload['Id'],
-            'validThrough' => $payload['ExpireDate'],
             'qualifications' => $payload['Requirements'],
             'maximumSalaray' => $payload['SalaryMax'],
             'minimumSalaray' => $payload['SalaryMin'],
             'baseSalaray' => $payload['SalaryMin'],
         ]);
         $job->setDatePostedAsString($payload['PostDate']);
+        $job = $this->setValidThroughAsString($payload['ExpireDate'], $job);
         $job = $this->setCategory($payload, $job);
         $job = $this->setCompany($payload, $job);
         return $this->setLocation($payload, $job);
@@ -130,6 +130,23 @@ class CareercastProvider extends AbstractProvider
         if (isset($payload['Zip'])) {
             $job->setPostalCode($payload['Zip']);
         }
+        return $job;
+    }
+
+    /**
+     * Sets validThrough.
+     *
+     * @param string $validThrough
+     * @param $job \JobApis\Jobs\Client\Job
+     *
+     * @return $job
+     */
+    protected function setValidThroughAsString($validThrough, $job)
+    {
+        if (strtotime($validThrough) !== false) {
+            $job->validThrough = new \DateTime($validThrough);
+        }
+
         return $job;
     }
 }

@@ -50,6 +50,7 @@ class CareercastProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($payload['Description'], $results->description);
         $this->assertEquals($payload['Url'], $results->url);
         $this->assertEquals(\DateTime::class, get_class($results->datePosted));
+        $this->assertEquals(\DateTime::class, get_class($results->validThrough));
     }
 
     /**
